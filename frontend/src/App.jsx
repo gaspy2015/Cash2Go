@@ -6,6 +6,9 @@ import Dashboard from "./scenes/dashboard";
 import Borrowers from "./scenes/borrowers/index"
 import LeftSidebar from "./scenes/global/LeftSidebar";
 import Loan from "./scenes/loan";
+import Banks from "./scenes/banks";
+import Category from "./scenes/category";
+import Facility from "./scenes/facility";
 
 
 function App() {
@@ -23,10 +26,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/loans" element={<Loan />} />
-
-              <Route 
-              path="/borrowers" 
-              element={<Borrowers />}/>
+              <Route path="/borrowers" element={<Borrowers />}/>
+              <Route path="/banks" element={<Banks />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/facility" element={<Facility />} />
             </Routes>
           </main>
         </div>

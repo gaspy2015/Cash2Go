@@ -55,7 +55,7 @@ customerRouter.post('/', async (req, res)=>{
 })
 customerRouter.put('/', async (req, res)=>{
   const {borrower, spouse, id} = req.body
-  console.log(id)
+  //TODO handle error
   const update = await builder('customertbl')
   .where('customerid', id)
   .update({

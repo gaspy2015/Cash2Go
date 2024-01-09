@@ -1,15 +1,6 @@
 const builder = require('../builder')
 
 async function getLoanList (req, res) {
-  // {
-  //   id : 'h.loan_header_id',
-  //   id_number: 'h.pn_number',
-  //   f_name: 'c.cfname',
-  //   l_name: 'c.clname',
-  //   principal : 'h.principal_amount',
-  //   date : 'h.date_granted',
-  //   code : 'h.status_code',  
-  // }
   const loans = await builder.select(
     'loan_header_id',
     'pn_number',
@@ -27,11 +18,8 @@ async function getLoanList (req, res) {
   res.status(200).json(loans)
 }
 
-
 async function getLoan(req, res) {
-
   const {id} = req.params
-  // UNSETTLED
   const loans = await builder.select(
     'loan_detail_id',
     'check_date',

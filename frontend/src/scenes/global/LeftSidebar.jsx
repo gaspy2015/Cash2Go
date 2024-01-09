@@ -177,8 +177,8 @@ const LeftSidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Loan Category"
-              to="/category"
+              title="Banks"
+              to="/banks"
               icon={<CategoryOutlined />}
               selected={selected}
               setSelected={setSelected}
@@ -186,6 +186,13 @@ const LeftSidebar = () => {
             <Item
               title="Loan Category"
               to="/category"
+              icon={<CategoryOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Facility"
+              to="/facility"
               icon={<CategoryOutlined />}
               selected={selected}
               setSelected={setSelected}
