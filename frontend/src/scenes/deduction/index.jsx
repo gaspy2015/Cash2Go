@@ -120,7 +120,6 @@ function DeductionType() {
     <div style={ {height : '75%', padding : 20}}>
       <Header 
         title={'Deduction Types'} 
-        subtitle={'List of deduction types use in processing new loans'} 
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

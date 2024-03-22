@@ -120,7 +120,6 @@ function Collateral() {
     <div style={ {height : '75%', padding : 20}}>
       <Header 
         title={'Collateral'} 
-        subtitle={'List of collateral'} 
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

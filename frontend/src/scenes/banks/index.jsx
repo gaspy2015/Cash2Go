@@ -127,7 +127,6 @@ export default function Banks() {
     <div style={{height : '75%', padding : 20}}>
       <Header 
         title={'Banks'} 
-        subtitle={'List of bank with location'} 
         showButton= {true}
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

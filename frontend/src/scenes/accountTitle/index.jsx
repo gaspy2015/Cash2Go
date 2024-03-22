@@ -120,8 +120,7 @@ function AccountTitle() {
   return (
     <div style={ {height : '75%', padding : 20}}>
       <Header 
-        title={'Account Titles'} 
-        subtitle={'List of account titles'} 
+        title={'Account Titles'}  
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

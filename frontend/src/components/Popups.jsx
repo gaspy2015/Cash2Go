@@ -2,6 +2,7 @@ import { Box, Button, Dialog, DialogContent, DialogTitle, Typography } from "@mu
 import { useTheme } from '@emotion/react'
 import { tokens } from "../theme"
 import { Link } from "react-router-dom";
+import { green, grey } from "@mui/material/colors";
 
 
 
@@ -20,9 +21,9 @@ export default function Popups(props) {
   return (
     <Box>
       <Dialog open={openPopup} maxWidth="xl" PaperProps={{style: dialogStyle}}>
-        <DialogTitle>
+        <DialogTitle sx={{backgroundColor: colors.greenAccent[800]}}>
           <div style={{display: 'flex', justifyContent: 'space-between', padding: 2}}>
-            <Typography variant="h3" component="div">
+            <Typography variant="h3" component="div" sx={{color: colors.primary[100]}}>
               {title}
             </Typography>
             <Button
@@ -31,12 +32,12 @@ export default function Popups(props) {
                         variant="text"
                         size="medium"
                         sx={{
-                            backgroundColor: colors.grey[700],
+                            
                             color: colors.grey[100],
                             fontWeight: "bold",
                             borderColor: colors.grey    [400],
                             "&:hover": {borderColor: colors.grey[200],
-                                        backgroundColor: colors.grey[600]        
+                                        backgroundColor: colors.greenAccent[900]        
                                 }
                                 
                         }}
@@ -46,7 +47,7 @@ export default function Popups(props) {
                     </Button>
           </div>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers sx={{backgroundColor: colors.greenAccent[900], color: grey[700]}}>
             {children}
         </DialogContent>
       </Dialog>

@@ -2,7 +2,29 @@ const express = require('express')
 const customerRouter = express.Router()
 const builder = require('../builder')
 
-customerRouter.get('/', async (req, res) =>{
+// customerRouter.get('/', async (req, res) =>{
+//   const customers = await builder.select({
+//     id : 'customerid',
+//     f_name : 'cfname',
+//     m_name : 'cmname',
+//     l_name : 'clname',
+//     contactNo : 'contactno',
+//     address : 'address',
+//     gender : 'gender',
+//   }).from({ c : 'customertbl'})
+
+//   res.status(200).send(customers)
+// })
+
+// customerRouter.get('/info', async (req, res)=>{
+//   const customers = await builder.select('*').from('customertbl')
+//   res.status(200).send(customers)
+// })
+// server-side code (Node.js/Express)
+
+customerRouter.get('/search', async (req, res) =>{
+  const {name} = req.query
+
   const customers = await builder.select({
     id : 'customerid',
     f_name : 'cfname',
@@ -10,16 +32,68 @@ customerRouter.get('/', async (req, res) =>{
     l_name : 'clname',
     contactNo : 'contactno',
     address : 'address',
-    gender : 'gender',
-  }).from({ c : 'customertbl'})
-
-  res.status(200).send(customers)
+    gender : 'gender', })
+  .from({ c : 'customertbl'}) 
+  .whereILike('clname', `%${name}%`)
+  .orWhereILike('cfname', `%${name}%`)
+  
+  const customer = customers.map((customer, index) => {
+    const lastName = customer.l_name.split(',')
+    const firstName = customer.f_name === '' ? '' : `, ${customer.f_name}`
+    const middleName = customer.m_name === '' ? '' : ` ${customer.m_name}`
+    const extName = lastName[1] ? `${lastName[1]}` : ''
+    const fullName = lastName[0] + firstName + middleName + extName
+    
+    return {
+      ...customer,
+      name : fullName.trim()
+    }
+  })
+  
+  res.send(customer)
 })
 
-customerRouter.get('/info', async (req, res)=>{
-  const customers = await builder.select('*').from('customertbl')
-  res.status(200).send(customers)
-})
+
+customerRouter.get('/', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 10;
+  const offset = (page - 1) * pageSize;
+
+  try {
+    const totalCount = await builder('items').count('id as total').first();
+    const items = await builder
+      .select({
+        id: 'customerid',
+        f_name: 'cfname',
+        m_name: 'cmname',
+        l_name: 'clname',
+        contactNo: 'contactno',
+        address: 'address',
+        gender: 'gender',
+      })
+      .from({ c: 'customertbl' })
+      .limit(pageSize)
+      .offset(offset);
+
+    const response = {
+      page,
+      pageSize,
+      total: totalCount.total,
+      totalPages: Math.ceil(totalCount.total / pageSize),
+      rows: items,
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).send({
+      message: 'Error fetching customers',
+      error: err,
+    });
+  }
+});
+
+
+
 
 customerRouter.get('/info/:id', async (req, res)=>{
   const {id} = req.params

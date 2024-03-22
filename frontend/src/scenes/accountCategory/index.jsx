@@ -120,7 +120,6 @@ function AccountCategory() {
     <div style={ {height : '75%', padding : 20}}>
       <Header 
         title={'Account Categories'} 
-        subtitle={'List of account categories'} 
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

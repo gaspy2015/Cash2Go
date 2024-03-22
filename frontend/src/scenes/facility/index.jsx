@@ -118,7 +118,6 @@ export default function Facility() {
     <div style={ {height : '75%', padding : 20}}>
       <Header 
         title={'Facilities'} 
-        subtitle={'List of facilities together with their respective codes!'}
         showButton={true}
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}

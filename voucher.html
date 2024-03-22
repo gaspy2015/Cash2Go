@@ -3,112 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Voucher</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <main class="m-3">
-    <div>
-
-    </div>
-    <div class="flex justify-end mx-5 text-blue-500  font-bold">05268</div>
-    <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
-    <div class="text-sm flex justify-center leading-none">2nd Level, Gensan Drive Wing, Ace Centerpoint</div>
-    <div class="text-sm flex justify-center leading-none">City of Coronadal, South Cotabato</div>
-    <div class="flex justify-center font-bold text-3xl">CHECK VOUCHER</div>
-    <div class="mt-2 flex justify-between gap-2">
-      <div class="flex gap-2 w-4/5">
-        <div>PAYEE:</div>
-        <div class="border-b-2 flex-1 border-slate-950">
-          <%= borowers  %>
-        </div>
-      </div>
-      <div class="flex gap-2 w-1/5">
-        <div>DATE:</div>
-        <div class="border-b-2 flex-1 border-slate-950"></div>
-      </div>
-    </div>
-    <div class="flex w-full mt-2"> 
-      <div class="w-[80%] border-r border-t border-b border-slate-900 ">
-        <div class="flex justify-center font-bold border-b border-slate-900">PARTICURALS</div>
-        <div class="my-2">
-          
-          <div class="flex">
-            <div class="basis-1/2 text-sm">CURRENT ASSETS - Notes Receivable - Agricultural Loan</div>
-            <!-- <div class="flex-1 flex justify-around gap-10"> -->
-              <div class="basis-1/4 text-center text-sm">611,999.95</div>
-              <div class="basis-1/4 text-center text-sm">-</div>
-            <!-- </div> -->
+  <main >
+    <!-- 4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint, Brgy. Zone 2, City of Koronadal, South Cotabato -->
+    <div class="w-[8in] m-auto p-1">
+      <div>
+        <div class="flex justify-between">
+          <img src="/frontend/src/assets/c2g_logo_nb.png" alt="" srcset="" class="w-20 h-20">
+          <div class="flex-1">
+            
+            <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
+            <div class="text-sm flex justify-center leading-none">4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint</div>
+            <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Coronadal, South Cotabato</div>
+            <div class="flex justify-center font-bold text-3xl">CHECK VOUCHER</div>
           </div>
-          <div class="flex">
-            <div class="flex-1 text-sm">NON CURRENT ASSETS - Office Improvements</div>
-            <div class="flex-1 flex justify-around gap-10">
-              <div class="flex-1 text-center text-sm">-</div>
-              <div class="flex-1 text-center text-sm">-</div>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-1 text-sm">CURRENT ASSETS - Petty Cash Fund</div>
-            <div class="flex-1 flex justify-around gap-20">
-              <div class="flex-1 text-center text-sm">-</div>
-              <div class="flex-1 text-center text-sm">-</div>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-1 text-sm"></div>
-            <div class="flex-1 flex justify-around gap-20">
-              <div class="flex-1 text-center text-sm">-</div>
-              <div class="flex-1 text-center text-sm">-</div>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-1 text-sm"></div>
-            <div class="flex-1 flex justify-around gap-20">
-              <div class="flex-1 text-center text-sm">-</div>
-              <div class="flex-1 text-center text-sm">-</div>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-1 text-sm"></div>
-            <div class="flex-1 flex justify-around gap-20">
-              <div class="flex-1 text-center text-sm">-</div>
-              <div class="flex-1 text-center text-sm">-</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-      <div class="w-[20%] border-t border-b border-slate-900">
-        <div class="flex justify-center font-bold border-b border-slate-900">AMOUNT</div>
-      </div>
-    </div>
-    <div class="flex">
-      <div class="w-[60%]"></div>
-      <div class="w-[40%]">
           <div>
-            <div class="flex flex-col gap-1 px-2 py-2 border-l border-slate-900">
-              <div class="flex gap-2 ">
-                <div>Prepared by:</div>
-                <div class="border-b flex-1 border-slate-900"></div>
-              </div>
-              <div class="flex gap-2 ">
-                <div>Checked by:</div>
-                <div class="border-b flex-1 border-slate-900"></div>
-              </div>
-              <div class="flex gap-2 ">
-                <div>Approved by:</div>
-                <div class="border-b flex-1 border-slate-900"></div>
-              </div>
+            <div class="flex justify-end mx-5 text-blue-500  font-bold"><%= voucherNumber  %></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="mt-2 flex justify-between gap-2">
+        <div class="flex gap-2 w-4/5">
+          <div>PAYEE:</div>
+          <div class="border-b-2 flex-1 border-slate-950 font-semibold px-4">
+            <%= borrower  %>
+          </div>
+        </div>
+        <div class="flex gap-2 w-1/5">
+          <div>DATE:</div>
+          <div class="border-b-2 flex-1 border-slate-950 font-semibold italic text-center"> <%= date %></div>
+        </div>
+      </div>
+      <div class="flex w-full mt-2"> 
+        <div class="w-[80%] border-r border-t border-b border-slate-900 ">
+          <div class="flex justify-center font-bold border-b border-slate-900">PARTICULARS</div>
+          <div class="my-2">
+            <% details.forEach(function(v){ %>
+              <div class="flex">
+              <div class="basis-3/4 text-sm"><%= v.title %></div>
+              <!-- <div class="basis-1/4 flex justify-around "> -->
+                <div class="basis-[12%] text-center text-sm">
+                  <% if(Number(v.credit) > 0) { %>
+                    <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.credit))  %>
+                  <% } else { %> - <% } %>
+                </div>
+                <div class="basis-[12%] text-center text-sm">
+                  <% if(Number(v.debit) > 0) { %>
+                    <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.debit))  %>
+                  <% } else { %> - <% } %>
+                </div>
+              <!-- </div> -->
+            </div>
+            <% }); %>
+          </div>
+        </div>
+        <div class="w-[20%] border-t border-b border-slate-900">
+          <div class="flex justify-center font-bold border-b border-slate-900">AMOUNT</div>
+        </div>
+      </div>
+      <div class="flex">
+        
+        <div class="w-[60%]">
+          <div>
+            <div class="flex flex-col gap-1 pr-2 py-2 border-r border-slate-900">
               <div>
-                <div class="font-semibold">Received from CASCH 2 GO FINANCE, INC. the amout of full</div>
+                <div class="font-semibold text-sm">Received from CASH 2 GO FINANCE, INC. the amout of full</div>
               </div>
               <div class="flex gap-2 ">
                 <div>Check:</div>
-                <div class="border-b flex-1 border-slate-900"></div>
+                <div class="border-b flex-1 border-slate-900 font-semibold italic px-3"><%= check_details %></div>
+                <div>Date:</div>
+                <div class="border-b border-slate-900 font-semibold italic px-1"><%= check_date  %></div>
               </div>
               <div class="flex gap-2 ">
-                <div>Date:</div>
-                <div class="border-b flex-1 border-slate-900"></div>
               </div>
               <div class="mt-5">
                 <div class="border-b flex-1 border-slate-900"></div>
@@ -116,10 +87,25 @@
               </div>
             </div>
           </div>
-        
-        <div>
-
+      </div>
+      <div class="w-[40%]">
+        <div class="flex flex-col h-full justify-end">
+          <div class="flex flex-col gap-1 ml-2 my-2 border-slate-900">
+            <div class="flex gap-2 ">
+              <div>Prepared by:</div>
+              <div class="border-b flex-1 border-slate-900"></div>
+            </div>
+            <div class="flex gap-2 ">
+              <div>Checked by:</div>
+              <div class="border-b flex-1 border-slate-900"></div>
+            </div>
+            <div class="flex gap-2 ">
+              <div>Approved by:</div>
+              <div class="border-b flex-1 border-slate-900"></div>
+            </div>
+          </div>
         </div>
+      </div>
       </div>
     </div>
   </main>
