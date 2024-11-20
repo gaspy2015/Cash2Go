@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import Popups from "../../components/Popups";
 import { DeleteOutlined, EditCalendarOutlined } from "@mui/icons-material";
-import { Button, Tooltip } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import { Bounce, toast } from "react-toastify";
@@ -22,7 +22,7 @@ function Employee() {
 
   const loadEmployeeData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/employee');
+      const response = await axios.get('/api/employee');
       setEmployee(response.data);
     } catch (error) {
       console.error('Error loading employee data:', error);
@@ -30,9 +30,7 @@ function Employee() {
   };
 
   const columns = [
-    { field: 'fname', flex: 1, headerName: 'First Name' },
-    { field: 'mname', flex: 1, headerName: 'Middle Name' },
-    { field: 'lname', flex: 1, headerName: 'Last Name' },
+    { field: 'name', flex: 1, headerName: 'FullName' },
     { field: 'role', flex: 1, headerName: 'Role' },
     {
       field: 'actions',
@@ -78,7 +76,7 @@ function Employee() {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:8000/employee/delete/${id}`);
+      const response = await axios.delete(`/api/employee/delete/${id}`);
       console.log(response.data);
       loadEmployeeData();
       toast.success('Employee Successfully Deleted!', {
@@ -117,18 +115,25 @@ function Employee() {
   }, []);
 
   return (
-    <div style={ {height : '75%', padding : 20}}>
+    <Box height='100%' padding={2} display='flex' flexDirection='column'>
     <Header 
       title={'Employee'} 
       showButton={true} 
       onAddButtonClick={()=> setOpenPopup(true)} 
       toURL={loc.pathname + '/new'}
       />
-    <DataGrid 
-      columns={columns}
-      rows={employee}
-      getRowId={(rows) => rows.employee_id}
-    />
+    <Box position='relative' flex={1} border='solid red'>
+      <Box sx={{position: 'absolute', inset : 0}}>
+        <DataGrid 
+          sx={{
+            display: 'grid',
+            gridTemplateRows: 'auto 4rem',
+          }}
+          columns={columns}
+          rows={employee}
+        />
+      </Box>
+    </Box>
 
       <Popups
           title="Employee"
@@ -141,7 +146,7 @@ function Employee() {
             onClosePopup={handleClosePopup}
           />
       </Popups>
-  </div>
+  </Box>
   );
 }
 

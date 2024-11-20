@@ -24,7 +24,7 @@ export default function Category() {
   // Start of loadCategoryData - use to load the x-datagrid to view the changes
   const loadCategoryData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/category');
+      const response = await axios.get('/api/category');
       setCategory(response.data);
     } catch (error) {
       console.error('Error loading category data:', error);
@@ -84,7 +84,7 @@ export default function Category() {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:8000/category/delete/${id}`);
+      const response = await axios.delete(`/api/category/delete/${id}`);
       console.log(response.data);
       loadCategoryData();
       toast.success('Category Successfully Deleted!', {

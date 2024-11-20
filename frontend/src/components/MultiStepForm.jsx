@@ -20,6 +20,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
     setSnapshot(values);
     setStepNumber(stepNumber + 1);
     setCompletedSteps({ ...completedSteps, [step.props.stepName]: true });
+    // console.log(totalSteps);
   };
 
   const previous = (values) => {
@@ -28,57 +29,76 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
   };
 
   const handleSubmit = async (formik, actions) => {
-
-    console.log(formik)
-
     if (step.props.onSubmit) {
       await step.props.onSubmit(formik.values);
     }
 
     if (isLastStep) {
       await onSubmit(formik.values);
-      setIsFormSubmitted(true);
+      // setIsFormSubmitted(true);
     } else {
-      formik.setTouched({});
+      actions.setTouched({});
       next(formik.values);
     }
   };
 
   return (
-    <div >
+    <div>
       <Formik
         initialValues={snapshot}
         onSubmit={handleSubmit}
         validationSchema={step.props.validationSchema}
       >
-        {(formik) => ( 
+        {(formik) => (
           <Form>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Stepper activeStep={stepNumber} style={{ marginBottom: 30 }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
+            <Stepper
+              alternativeLabel
+              activeStep={stepNumber}
+              style={{ marginBottom: 30,  }}
+              
+            >
               {steps.map((currentStep, index) => {
                 const label = currentStep.props.stepName;
                 const isStepCompleted = completedSteps[label];
                 return (
-                  <Step key={label} completed={isStepCompleted}>
-                    <StepLabel>{label}</StepLabel>
+                  <Step key={label} completed={isStepCompleted} sx={{
+                    '& .MuiStepLabel-root .Mui-completed': {
+                      color: 'secondary.dark', // circle color (COMPLETED)
+                    },
+                    '& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel':
+                      {
+                        color: 'grey.500', // Just text label (COMPLETED)
+                      },
+                    '& .MuiStepLabel-root .Mui-active': {
+                      color: 'secondary.main', // circle color (ACTIVE)
+                    },
+                    '& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel':
+                      {
+                        color: 'common.white', // Just text label (ACTIVE)
+                      },
+                    '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
+                      fill: 'black', // circle's number (ACTIVE)
+                    },
+                  }}>
+                    <StepLabel >{label}</StepLabel>
                   </Step>
                 );
               })}
             </Stepper>
-          </div>
-          {isFormSubmitted ? (
-            <SuccessComponent />
-          ) : (
-            <>
-              {step}
-              <FormNavigation
-                isLastStep={isLastStep}
-                hasPrevious={stepNumber > 0}
-                onBackClick={() => previous(formik.values)}
-                // submit={() => handleSubmit(formik)}
-              />
-            </>
-          )}
+            {/* </div> */}
+            {isFormSubmitted ? (
+              <SuccessComponent />
+            ) : (
+              <>
+                {React.cloneElement(step, { ...formik })}
+                <FormNavigation
+                  isLastStep={isLastStep}
+                  hasPrevious={stepNumber > 0}
+                  onBackClick={() => previous(formik.values)}
+                />
+              </>
+            )}
           </Form>
         )}
       </Formik>
@@ -88,4 +108,12 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
 
 export default MultiStepForm;
 
-export const FormStep = ({ stepName = "", schema, children }) => children;
+export const FormStep = ({ stepName = "", children }) => {
+  return (
+    <div>
+      {React.Children.map(children, (child) => {
+        return React.cloneElement(child);
+      })}
+    </div>
+  );
+};

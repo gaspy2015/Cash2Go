@@ -30,7 +30,7 @@ export default function AccountCategoryForm({ onAccountCategoryAdded, onClosePop
     useEffect(() => {
         if (id) {
           axios
-            .get(`http://localhost:8000/account-category/read/${id}`)
+            .get(`/api/account-category/read/${id}`)
             .then((res) => {
               const { account_name } = res.data[0];
               setInitialValues({ account_name });
@@ -45,8 +45,8 @@ export default function AccountCategoryForm({ onAccountCategoryAdded, onClosePop
       const handleSubmit = async (values, actions) => {
         // Here the actions object is provided by Formik which contains helpful methods.
         const apiURL = id
-          ? `http://localhost:8000/account-category/edit/${id}`
-          : "http://localhost:8000/account-category/new";
+          ? `/api/account-category/edit/${id}`
+          : "/api/account-category/new";
     
         try {
           const res = await axios[id ? "put" : "post"](apiURL, values);

@@ -42,7 +42,7 @@ export default function EmployeeForm({onEmployeeAdded, onClosePopup}) {
     useEffect(() => {
         if (id) {
           axios
-            .get(`http://localhost:8000/employee/read/${id}`)
+            .get(`/api/employee/read/${id}`)
             .then((res) => {
               const { fname, mname, lname, role } = res.data[0];
               setInitialValues({ fname, mname, lname, role });
@@ -57,8 +57,8 @@ export default function EmployeeForm({onEmployeeAdded, onClosePopup}) {
       const handleSubmit = async (values, actions) => {
         // Here the actions object is provided by Formik which contains helpful methods.
         const apiURL = id
-          ? `http://localhost:8000/employee/edit/${id}`
-          : "http://localhost:8000/employee/new";
+          ? `/api/employee/edit/${id}`
+          : "/api/employee/new";
     
         try {
           const res = await axios[id ? "put" : "post"](apiURL, values);

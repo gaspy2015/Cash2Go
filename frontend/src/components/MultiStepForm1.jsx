@@ -5,11 +5,12 @@ import { Step, StepLabel, Stepper } from "@mui/material";
 import SuccessComponent from "./SuccessComponent"; // Import your success component
 
 const MultiStepForm1 = ({ children, initialFormValues, onSubmit }) => {
-  const [stepNumber, setStepNumber] = useState(1);
+  const [stepNumber, setStepNumber] = useState(0);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [completedSteps, setCompletedSteps] = useState({});
   const steps = React.Children.toArray(children);
   const [snapshot, setSnapshot] = useState(initialFormValues);
+  const [submitButtonState, setSubmitButtonState] = useState(false)
   
   const step = steps[stepNumber];
   const isLastStep = stepNumber === steps.length - 1;
@@ -43,17 +44,25 @@ const MultiStepForm1 = ({ children, initialFormValues, onSubmit }) => {
   const submit = async () => {
     const schema = step.props.schema
     
-    step.props.onSubmit()
-
+    // console.log('next')
     if(schema && schema.isValidSync(initialFormValues)) {
-      if(isLastStep){
-        onSubmit();
-      } else {
-        next(initialFormValues)
-      }
-    }else{
-      console.log('error', initialFormValues)
+      // if(isLastStep){
+      //   setSubmitButtonState(true)
+      //   onSubmit();
+      // } else {
+      next(initialFormValues)
+      // }
     }
+
+    if(step.props.onSubmit) step.props.onSubmit();
+    
+    if(isLastStep) {
+      onSubmit()
+      setIsFormSubmitted(true)
+    }
+    
+    if(!schema && !isLastStep) next(initialFormValues);
+
   }
 
   return (
@@ -64,14 +73,32 @@ const MultiStepForm1 = ({ children, initialFormValues, onSubmit }) => {
               const label = currentStep.props.stepName;
               const isStepCompleted = completedSteps[label];
               return (
-                <Step key={label} completed={isStepCompleted}>
-                  <StepLabel>{label}</StepLabel>
+                <Step key={label} completed={isStepCompleted} sx={{
+                  '& .MuiStepLabel-root .Mui-completed': {
+                    color: 'secondary.dark', // circle color (COMPLETED)
+                  },
+                  '& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel':
+                    {
+                      color: 'grey.500', // Just text label (COMPLETED)
+                    },
+                  '& .MuiStepLabel-root .Mui-active': {
+                    color: 'secondary.main', // circle color (ACTIVE)
+                  },
+                  '& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel':
+                    {
+                      color: 'common.white', // Just text label (ACTIVE)
+                    },
+                  '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
+                    fill: 'black', // circle's number (ACTIVE)
+                  },
+                }}>
+                  <StepLabel >{label}</StepLabel>
                 </Step>
               );
             })}
           </Stepper>
         </div>
-        {!isFormSubmitted && (
+        {!isFormSubmitted ? (
         // ? (
           // <SuccessComponent />
         // ) : (
@@ -81,9 +108,12 @@ const MultiStepForm1 = ({ children, initialFormValues, onSubmit }) => {
               isLastStep={isLastStep}
               hasPrevious={stepNumber > 0}
               onBackClick={() => {previous(initialFormValues);}}
+              state={submitButtonState}
               submit={submit}
             />
           </>
+        ) : (
+          <SuccessComponent/>
         )}           
     
     </div>

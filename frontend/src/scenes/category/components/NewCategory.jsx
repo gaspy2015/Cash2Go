@@ -18,7 +18,7 @@ export default function NewCategory({onCategoryAdded, onClosePopup}) {
     // Start useEffect
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:8000/category/read/${id}`)
+            axios.get(`/api/category/read/${id}`)
             .then((res) => {
                 console.log('API Response:', res.data);
                 
@@ -48,7 +48,7 @@ export default function NewCategory({onCategoryAdded, onClosePopup}) {
     // Start handleSubmit
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const apiURL = id ? `http://localhost:8000/category/edit/${id}` : 'http://localhost:8000/category/new';
+        const apiURL = id ? `/api/category/edit/${id}` : '/api/category/new';
         console.log({ category });
         const axiosMethod = id ? axios.put : axios.post;
     

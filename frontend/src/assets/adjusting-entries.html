@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voucher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <main >
+    <!-- 4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint, Brgy. Zone 2, City of Koronadal, South Cotabato -->
+    <div class="w-[8in] m-auto p-1">
+      <div class="flex">
+        <div class="flex-[0.5] relative">
+          <img src=<%= logo  %> alt="" srcset="" class="w-20 h-20 absolute right-0">
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
+          <div class="text-sm flex justify-center leading-none">4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint</div>
+          <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Koronadal, South Cotabato</div>
+          <div class="flex justify-center font-bold text-3xl">ADJUSTING TICKET</div>
+        </div>
+        <div class="flex-[0.5]" ><div class="flex justify-end mx-5 text-blue-500  font-bold"><%= ticket_number  %></div></div>
+
+      </div>
+      <div class="mt-2 flex justify-between gap-2">
+        <div class="flex gap-2 w-4/5">
+          <div>BORROWER:</div>
+          <div class="border-b-2 flex-1 border-slate-950 font-semibold px-4">
+            <%= borrower  %>
+          </div>
+        </div>
+        <div class="flex gap-2 w-1/5">
+          <div>DATE:</div>
+          <div class="border-b-2 flex-1 border-slate-950 font-semibold italic text-center"> <%= date %></div>
+        </div>
+      </div>
+      <div class="flex w-full mt-2"> 
+        <div class="w-[75%] border-r border-t border-b border-slate-900 ">
+          <div class="flex justify-center font-bold border-b border-slate-900">PARTICULARS</div>
+          <div class="my-2">
+            <% details.forEach(function(v){ %>
+              <div class="flex">
+              <div class="text-sm"><%= v.title %></div>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+        <div class="w-[25%] border-t border-b border-slate-900">
+          <div class="flex justify-center font-bold border-b border-slate-900">AMOUNT</div>
+          <div class="my-2">
+            <% details.forEach(function(v) { %>
+              <div class="flex justify-around">
+                <div class="flex-1 text-sm text-center">
+                  <% if(Number(v.debit) > 0) { %>
+                      <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.debit))  %>
+                    <% } else { %> - <% } %>
+                </div>
+                <div class="flex-1 text-sm text-center">
+                  <% if(Number(v.credit) > 0) { %>
+                      <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.credit))  %>
+                    <% } else { %> - <% } %>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+        </div>
+      </div>
+      <div class="flex">
+        
+        <div class="w-[60%]">
+          <div class="h-full">
+            <div class=" flex flex-col gap-1 h-full pr-2 py-2 border-r border-slate-900">
+              <div style="display: block; line-height: 1;">
+                <span class="uppercase text-base">Explaination: </span>
+                <span class="uppercase font-medium text-sm">
+                  <%= explaination %>
+                </span>
+              </div>
+            
+            </div>
+          </div>
+      </div>
+      <div class="w-[40%]">
+        <div class="flex flex-col h-full">
+          <div class="flex flex-col gap-1 ml-2 my-2 border-slate-900">
+            <div class="flex gap-2 ">
+              <div>Prepared by:</div>
+              <div class="border-b flex-1 border-slate-900 text-center font-semibold italic"><%= prepared_by %></div>
+            </div>
+            <div class="flex gap-2 ">
+              <div>Checked by:</div>
+              <div class="border-b flex-1 border-slate-900 text-center font-semibold italic"><%= checked_by %></div>
+            </div>
+            <div class="flex gap-2 ">
+              <div>Approved by:</div>
+              <div class="border-b flex-1 border-slate-900 text-center font-semibold italic"><%= approved_by %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

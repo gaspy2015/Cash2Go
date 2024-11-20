@@ -24,7 +24,7 @@ function AccountCategory() {
 
     const loadAccountCategoryData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/account-category');
+          const response = await axios.get('/api/account-category');
           setAccountCategory(response.data);
         } catch (error) {
           console.error('Error loading account category data:', error);
@@ -77,7 +77,7 @@ function AccountCategory() {
         }
     
         try {
-          const response = await axios.delete(`http://localhost:8000/account-category/delete/${id}`);
+          const response = await axios.delete(`/api/account-category/delete/${id}`);
           console.log(response.data);
           loadAccountCategoryData();
           toast.success('Account category Successfully Deleted!', {

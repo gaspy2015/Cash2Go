@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+    body {
+      font-family: 'Poppins';
+    }
+  </style>
+</head>
+<body class="bg-gray-300 ">
+  <main >
+    <div class="w-[8in] m-auto p-1 bg-gray-50">
+      <!-- Header -->
+      <div class="flex"> 
+        <div class="flex-[0.5] relative">
+          <!-- <img src= alt="" srcset="" class="w-20 h-20 absolute right-0"> -->
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
+          <div class="text-sm flex justify-center leading-none">4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint</div>
+          <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Koronadal, South Cotabato</div>
+          <!-- <div class="flex justify-center font-bold text-3xl">Payment</div> -->
+        </div>
+        <div class="flex-[0.5]" ></div>
+
+      </div>
+      <!-- Header END -->
+      <!-- Content -->
+      <div class="flex flex-col gap-4 m-4">
+        <% deductions.forEach(function(v) { %>
+        <div>
+          <table class="table-auto w-full">
+            <thead>
+              <tr>
+                <th class="border text-sm border-slate-500 px-1">Process Date</th>
+                <th class="border text-sm  border-slate-500 px-1" >PR Number</th>
+                <th class="border text-sm border-slate-500 px-1">Borrower Name</th>
+                <th class="border text-sm border-slate-500 px-1">PN Number</th>
+                <!-- <th class="border text-sm border-slate-500 px-1">Mode of Payment</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-sm text-center px-1"><%= v.process_date %></td>
+                <td class="text-sm border-slate-500 text-center px-1"><%=v.pr_number  %></td>
+                <td class="text-sm border-slate-500 text-center px-1"><%= v.full_name %></td>
+                <td class="text-sm border-slate-500 text-center px-1"><%= v.pn_number %></td>
+                <!-- <td class="text-sm border-slate-500 text-center px-1">CHECK</td> -->
+              </tr>
+            </tbody>
+          </table>
+          <table class="table-auto w-full mt-1">
+            <thead>
+              <tr>
+                
+                <th class="border text-sm border-slate-500 px-1" >Service Charge</th>
+                <th class="border text-sm border-slate-500 px-1">Appraisal Fee</th>
+                <th class="border text-sm border-slate-500 px-1">Notarial Fee</th>
+                <th class="border text-sm border-slate-500 px-1">Documentary Stamp</th>
+                <th class="border text-sm border-slate-500 px-1">Documentary Stamp (BIR)</th>
+                <th class="border text-sm border-slate-500 px-1">Hold Charge</th>
+                <!-- <th class="border text-sm border-slate-500 px-1">Total</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                
+                <td class=" border-slate-500 text-center px-1"><%= v.service_charge %></td>
+                <td class=" border-slate-500 text-center px-1"><%= v.appraisal_fee %></td>
+                <td class=" border-slate-500 text-center px-1"><%= v.notarial_fee  %></td>
+                <td class=" border-slate-500 text-center px-1"><%= v.documentary_stamp %></td>
+                <td class=" border-slate-500 text-center px-1"><%= v.doc_stamp_bir %></td>
+                <td class=" border-slate-500 text-center px-1"><%= v.hold_charge %></td>
+                <!-- <td class=" border-slate-500 text-center px-1">24,6645459.00</td> -->
+              </tr>
+            </tbody>
+          </table>
+          <div class="border-b border-dashed mt-2 border-slate-600"> </div>
+        </div>
+        <% }) %>
+          
+        
+
+      </div>
+      <!-- Content END-->
+    </div>
+  </main>
+</body>
+</html>

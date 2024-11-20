@@ -28,8 +28,10 @@ const FormNavigation = (props) => {
       )}
 
       <Button
+        type="submit"
         variant="outlined"
         color="primary"
+        disabled={props.state}
         sx={{
           color: grey[500],
           borderColor: grey[500],

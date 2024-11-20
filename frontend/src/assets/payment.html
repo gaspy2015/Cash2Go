@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+    body {
+      font-family: 'Poppins';
+    }
+  </style>
+</head>
+<body class="bg-gray-300 ">
+  <main >
+    <div class="w-[8in] m-auto p-1 bg-gray-50 ">
+      <!-- Header -->
+      <div class="flex"> 
+        <div class="flex-[0.5] relative">
+          <!-- <img src= alt="" srcset="" class="w-20 h-20 absolute right-0"> -->
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
+          <div class="text-sm flex justify-center leading-none">4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint</div>
+          <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Koronadal, South Cotabato</div>
+          <!-- <div class="flex justify-center font-bold text-3xl">Payment</div> -->
+        </div>
+        <div class="flex-[0.5]" ></div>
+
+      </div>
+      <!-- Header END -->
+      <!-- Content -->
+      <div class="flex flex-col gap-4 m-4">
+        <% payments.forEach(function(p, i){ %>
+          <div>
+            <p class="text-xs text-right"><%= i + 1 %></p>
+            <table class="table-auto w-full">
+              <thead>
+                <tr>
+                  <th class="border text-sm border-slate-500 px-1">Process Date</th>
+                  <th class="border text-sm  border-slate-500 px-1" >PR Number</th>
+                  <th class="border text-sm border-slate-500 px-1">Borrower Name</th>
+                  <th class="border text-sm border-slate-500 px-1">PN Number</th>
+                  <th class="border text-sm border-slate-500 px-1">Mode of Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-sm text-center px-1"><%= p.payment_date  %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_receipt  %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.fullName %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.pn_number %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_type %></td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table-auto w-full mt-1">
+              <thead>
+                <tr>
+                  
+                  <th class="border text-sm border-slate-500 px-1" >Bank</th>
+                  <th class="border text-sm border-slate-500 px-1">Check Date</th>
+                  <th class="border text-sm border-slate-500 px-1">Check Number</th>
+                  <th class="border text-sm border-slate-500 px-1">Principal</th>
+                  <th class="border text-sm border-slate-500 px-1">Interest</th>
+                  <th class="border text-sm border-slate-500 px-1">Penalty</th>
+                  <th class="border text-sm border-slate-500 px-1">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.bank  %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.check_date %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.check_number %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_principal  %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_interest  %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_penalty %></td>
+                  <td class="text-sm border-slate-500 text-center px-1"><%= p.payment_amount %></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="border-b border-dashed mt-2 border-slate-600"> </div>
+          </div>
+
+        <% }) %>
+        
+          
+        
+
+      </div>
+      <!-- Content END-->
+    </div>
+  </main>
+</body>
+</html>

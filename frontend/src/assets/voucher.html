@@ -17,13 +17,12 @@
         <div class="flex-1">
           <div class="flex justify-center font-extrabold text-2xl">Cash 2 Go Finance, Inc.</div>
           <div class="text-sm flex justify-center leading-none">4th Floor, Gensan Drive Wing, Mall of Ace Centerpoint</div>
-          <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Coronadal, South Cotabato</div>
+          <div class="text-sm flex justify-center leading-none">Brgy. Zone 2, City of Koronadal, South Cotabato</div>
           <div class="flex justify-center font-bold text-3xl">CHECK VOUCHER</div>
         </div>
         <div class="flex-[0.5]" ><div class="flex justify-end mx-5 text-blue-500  font-bold"><%= voucherNumber  %></div></div>
 
       </div>
-      
       <div class="mt-2 flex justify-between gap-2">
         <div class="flex gap-2 w-4/5">
           <div>PAYEE:</div>
@@ -37,39 +36,61 @@
         </div>
       </div>
       <div class="flex w-full mt-2"> 
-        <div class="w-[80%] border-r border-t border-b border-slate-900 ">
+        <div class="w-[75%] border-r border-t border-b border-slate-900 ">
           <div class="flex justify-center font-bold border-b border-slate-900">PARTICULARS</div>
           <div class="my-2">
             <% details.forEach(function(v){ %>
               <div class="flex">
-              <div class="basis-3/4 text-sm"><%= v.title %></div>
-              <!-- <div class="basis-1/4 flex justify-around "> -->
-                <div class="basis-[12%] text-center text-sm">
-                  <% if(Number(v.credit) > 0) { %>
-                    <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.credit))  %>
-                  <% } else { %> - <% } %>
-                </div>
-                <div class="basis-[12%] text-center text-sm">
-                  <% if(Number(v.debit) > 0) { %>
-                    <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.debit))  %>
-                  <% } else { %> - <% } %>
-                </div>
-              <!-- </div> -->
+              <div class="text-sm"><%= v.title %></div>
             </div>
             <% }); %>
           </div>
         </div>
-        <div class="w-[20%] border-t border-b border-slate-900">
+        <div class="w-[25%] border-t border-b border-slate-900">
           <div class="flex justify-center font-bold border-b border-slate-900">AMOUNT</div>
+          <div class="my-2">
+            <% details.forEach(function(v) { %>
+              <div class="flex justify-around">
+                <div class="flex-1 text-sm text-center">
+                  <% if(Number(v.debit) > 0) { %>
+                      <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.debit))  %>
+                    <% } else { %> - <% } %>
+                </div>
+                <div class="flex-1 text-sm text-center">
+                  <% if(Number(v.credit) > 0) { %>
+                      <%= Intl.NumberFormat(undefined,  {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(Number(v.credit))  %>
+                    <% } else { %> - <% } %>
+                </div>
+              </div>
+              <% }) %>
+          </div>
         </div>
       </div>
       <div class="flex">
         
         <div class="w-[60%]">
+          <% if(has_second_check) { %>
+          <div>
+            <div class="flex flex-col gap-1 pr-2 py-2 border-r border-slate-900">
+              <div class="flex gap-2 ">
+                <div>Check:</div>
+                <div class="border-b flex-1 border-slate-900 font-semibold italic px-3"><%= check_details_2 %></div>
+                <div>Date:</div>
+                <div class="border-b border-slate-900 font-semibold italic px-1"><%= check_date_2  %></div>
+              </div>
+              <div class="flex gap-2 ">
+              </div>
+              <!-- <div class="mt-5">
+                <div class="border-b flex-1 border-slate-900"></div>
+                <div class="text-center">Printed Name & Signature</div>
+              </div> -->
+            </div>
+          </div>
+          <% } %>
           <div>
             <div class="flex flex-col gap-1 pr-2 py-2 border-r border-slate-900">
               <div>
-                <div class="font-semibold text-sm">Received from CASH 2 GO FINANCE, INC. the amout of full</div>
+                <div class="font-semibold text-sm">Received from CASH 2 GO FINANCE, INC. the amout in full</div>
               </div>
               <div class="flex gap-2 ">
                 <div>Check:</div>
@@ -87,7 +108,7 @@
           </div>
       </div>
       <div class="w-[40%]">
-        <div class="flex flex-col h-full justify-end">
+        <div class="flex flex-col h-full">
           <div class="flex flex-col gap-1 ml-2 my-2 border-slate-900">
             <div class="flex gap-2 ">
               <div>Prepared by:</div>

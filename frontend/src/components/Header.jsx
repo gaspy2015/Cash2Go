@@ -8,13 +8,16 @@ const Header = ({title, subtitle, showButton = true, onAddButtonClick, toURL}) =
     const colors = tokens(theme.palette.mode);
 
   return (
-    <Box width="100%" height="20%" display="flex" justifyContent="space-between" p={2} sx={{ '& button': { m: 1 } }}>
+    <Box 
+    display="flex" justifyContent="space-between" p={2} 
+        // sx={{ '& button': { m: 1 } }}
+        >
         <div>
         <Typography 
-            variant="h2" 
+            variant="h4" 
             color={colors.grey[100]} 
             fontWeight="bold" 
-            sx={{ mb:"5px" }}
+            sx={{ mb:"2px" }}
         > 
             {title} 
         </Typography>
@@ -22,7 +25,6 @@ const Header = ({title, subtitle, showButton = true, onAddButtonClick, toURL}) =
         <Typography
             variant="h5"
             color={colors.greenAccent[400]}
-            
         > 
             {subtitle} 
         </Typography>
@@ -38,9 +40,9 @@ const Header = ({title, subtitle, showButton = true, onAddButtonClick, toURL}) =
                         sx={{
                             backgroundColor: colors.greenAccent[900],
                             color: colors.grey[100],
-                            fontSize: "14px",
+                            fontSize: "15px",
                             fontWeight: "bold",
-                            padding: "10px 20px",
+                            // padding: "5px",
                             borderColor: colors.greenAccent[800],
                             "&:hover": {borderColor: colors.grey[400],
                                         backgroundColor: colors.greenAccent[100],

@@ -82,7 +82,7 @@ const Borrowers = () => {
   const [customers, dispatch] = useReducer(reducer, null)
   
   async function edit(id){
-    const req = await fetch(`http://localhost:8000/customers/info/${id}`)
+    const req = await fetch(`/api/customers/info/${id}`)
     const bInfo = await req.json();
     // setIsUpdate(true)
     const bData = {...borrower}
@@ -123,7 +123,7 @@ const Borrowers = () => {
   useEffect(()=>{
     
     const getCustomer = async() =>{
-      const req = await fetch('http://localhost:8000/customers')
+      const req = await fetch('/api/customers')
       const resJson = await req.json()
       dispatch({type : 'INIT', customers : resJson})
     }

@@ -4,13 +4,11 @@ import { DataGrid, GridActionsCellItem, GridRowModes, GRID_SINGLE_SELECT_COL_DEF
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import { Autocomplete, Box, TextField, } from "@mui/material"
-// import Header from "../../../components/Header"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import dayjs from "dayjs";
 
 const formatNumber = (value) => {
-  const amount = value.split('.');
-  const format = Number(amount[0]).toLocaleString('en', {
+  const format = Number(value).toLocaleString('en', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2 
   });
@@ -101,7 +99,7 @@ export default function DetailsModal(props) {
         bank_id : getBankId(bank_name)
       }
       
-      fetch(`http://localhost:8000/loans/details/${selectedLoanId}`, {
+      fetch(`/api/loans/details/${selectedLoanId}`, {
         method : 'PUT',
         headers: { "Content-Type": "application/json" },
         body : JSON.stringify(data),
@@ -112,7 +110,7 @@ export default function DetailsModal(props) {
 
   useEffect(() => {
     const getLoanDetail = async() => {
-        const req = await fetch(`http://localhost:8000/loans/${selectedLoanId}`)
+        const req = await fetch(`/api/loans/${selectedLoanId}`)
         const resJson = await req.json()
         setLoanDetails(resJson)
     }
@@ -124,14 +122,12 @@ export default function DetailsModal(props) {
       return oldRow
     }
     const row = await update(newRow)
-    
     return row
   }
 
-
   const columns = [
     // {field: "loan_detail_id", headerName: "ID" },
-    {field: "check_date", headerName: "Check Date", width: 150,
+    {field: "due_date", headerName: "Due Date", width: 150,
     valueFormatter : (params) => {
       return dayjs(params.value).format('MM-DD-YYYY');
     }

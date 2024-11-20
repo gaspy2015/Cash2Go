@@ -33,7 +33,7 @@ export default function CategroyForm({onCategoryAdded, onClosePopup}) {
     useEffect(() => {
         if (id) {
           axios
-            .get(`http://localhost:8000/category/read/${id}`)
+            .get(`/api/category/read/${id}`)
             .then((res) => {
               const { name, code, type } = res.data[0];
               setInitialValues({ name, code, type });
@@ -48,8 +48,8 @@ export default function CategroyForm({onCategoryAdded, onClosePopup}) {
       const handleSubmit = async (values, actions) => {
         // Here the actions object is provided by Formik which contains helpful methods.
         const apiURL = id
-          ? `http://localhost:8000/category/edit/${id}`
-          : "http://localhost:8000/category/new";
+          ? `/api/category/edit/${id}`
+          : "/api/category/new";
     
         try {
           const res = await axios[id ? "put" : "post"](apiURL, values);

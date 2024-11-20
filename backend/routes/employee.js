@@ -4,7 +4,7 @@ const builder = require('../builder')
 
 
 employeeRouter.get('/', async (req, res) => {
-   const employees = await builder('employeetbl').select('*')
+   const employees = await builder('employeetbl').select({id: 'employee_id', lname: 'lname', fname: 'fname', mname: 'mname', role: 'role'})
    const mapEmployees = employees.map((v) => {
     const fullName = `${v.lname}, ${v.fname} ${v.mname}.`
     return {

@@ -30,7 +30,7 @@ export default function CollateralForm({ onCollateralAdded, onClosePopup }) {
     useEffect(() => {
         if (id) {
           axios
-            .get(`http://localhost:8000/collateral/read/${id}`)
+            .get(`/api/collateral/read/${id}`)
             .then((res) => {
               const { description } = res.data[0];
               setInitialValues({ description });
@@ -45,8 +45,8 @@ export default function CollateralForm({ onCollateralAdded, onClosePopup }) {
       const handleSubmit = async (values, actions) => {
         // Here the actions object is provided by Formik which contains helpful methods.
         const apiURL = id
-          ? `http://localhost:8000/collateral/edit/${id}`
-          : "http://localhost:8000/collateral/new";
+          ? `/api/collateral/edit/${id}`
+          : "/api/collateral/new";
     
         try {
           const res = await axios[id ? "put" : "post"](apiURL, values);

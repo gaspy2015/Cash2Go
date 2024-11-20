@@ -9,7 +9,7 @@ facilityRouter.get('/', async (req, res)=>{
 
   facilityRouter.get('/read/:id', async (req, res) =>{
     const id = req.params.id;
-    const deduction = await builder.select({id : 'loan_facility_id', name : 'description', code: 'code'})
+    const deduction = await builder.select({id : 'loan_facility_id', name : 'description', code: 'code', rediscounting : 'is_rediscount'})
                                    .from('loan_facilitytbl')
                                    .where('loan_facility_id', id)
     res.status(200).json(deduction)
@@ -19,7 +19,8 @@ facilityRouter.get('/', async (req, res)=>{
     try {
       const id = await builder('loan_facilitytbl').insert({
         description: req.body.name,
-        code: req.body.code
+        code: req.body.code,
+        is_rediscount : req.body.rediscounting
       }, ['loan_facility_id']);
   
       res.status(200).json({ id: id[0], message: 'Facility added successfully' });
@@ -37,7 +38,8 @@ facilityRouter.get('/', async (req, res)=>{
         .where('loan_facility_id', id)
         .update({
             description: req.body.name,
-            code: req.body.code
+            code: req.body.code,
+            is_rediscount : req.body.rediscounting
         });
   
       if (update > 0) {

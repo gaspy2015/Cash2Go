@@ -31,7 +31,7 @@ export default function LoanTablePreview({details}) {
                 <TableCell>{numberFormat.format(Number(v.principal))}</TableCell>
                 <TableCell>{numberFormat.format(Number(v.interest))}</TableCell>
                 <TableCell>{numberFormat.format(Number(v.amortization))}</TableCell>
-                <TableCell>{v.bank}</TableCell>
+                <TableCell>{v.bank_name}</TableCell>
                 <TableCell>{v.checkNumber}</TableCell>
               </TableRow>
             ))

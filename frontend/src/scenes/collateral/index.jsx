@@ -24,7 +24,7 @@ function Collateral() {
 
     const loadCollateralData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/collateral');
+          const response = await axios.get('/api/collateral');
           setCollateral(response.data);
         } catch (error) {
           console.error('Error loading collateral data:', error);
@@ -77,7 +77,7 @@ function Collateral() {
         }
     
         try {
-          const response = await axios.delete(`http://localhost:8000/collateral/delete/${id}`);
+          const response = await axios.delete(`/api/collateral/delete/${id}`);
           console.log(response.data);
           loadCollateralData();
           toast.success('Collateral Successfully Deleted!', {

@@ -1,45 +1,59 @@
 const express = require("express");
 const customerInfoRouter = express.Router();
 const builder = require("../builder");
-
-// customerInfoRouter.get('/', async (req, res) => {
-//     try {
-//       const customers = await builder
-//         .select({
-//           id: 'customerid',
-//           fullname: builder.raw("CONCAT_WS(', ', ??, CONCAT(??, ' ', SUBSTRING(??, 1, 1), '.'))", ['clname', 'cfname', 'cmname']),
-//           contactNo: 'contactno',
-//           address: 'address',
-//           gender: 'gender',
-//         })
-//         .from({ c: 'customertbl' });
-
-//       res.status(200).send(customers);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal Server Error');
-//     }
-//   });
+const multer = require("multer");
+const { upload } = require("../middleware/multerMiddleware");
 
 customerInfoRouter.get("/", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
     const offset = (page - 1) * pageSize;
+    const search = req.query.search ? req.query.search : "";
 
     const [results, totalCount] = await Promise.all([
       builder
         .select({
-          id: 'customerid',
-          fullname: builder.raw("CONCAT_WS(', ', ??, CONCAT(??, ' ', SUBSTRING(??, 1, 1), '.'))", ['clname', 'cfname', 'cmname']),
-          contactNo: 'contactno',
-          address: 'address',
-          gender: 'gender',
+          id: "customerid",
+          fullname: builder.raw(
+            "CONCAT_WS(', ', ??, CONCAT(??, ' ', SUBSTRING(??, 1, 1), '.'))",
+            ["clname", "cfname", "cmname"]
+          ),
+          contactNo: "contactno",
+          address: "address",
+          gender: "gender",
+          cimg: "cimg",
+          tin: "tin",
         })
-        .from({ c: 'customertbl' })
+        .from({ c: "customertbl" })
+        .modify((queryBuilder) => {
+          if (search.trim() !== "") {
+            queryBuilder.where((qb) => {
+              qb.where("clname", "like", `%${search.trim()}%`).orWhere(
+                "cfname",
+                "like",
+                `%${search.trim()}%`
+              );
+            }); 
+          }
+        })
         .limit(pageSize)
         .offset(offset),
-      builder.count('* as count').from({ c: 'customertbl' }).first(),
+      builder
+        .count("* as count")
+        .from({ c: "customertbl" })
+        .modify((queryBuilder) => {
+          if (search.trim() !== "") {
+            queryBuilder.where((qb) => {
+              qb.where("clname", "like", `%${search.trim()}%`).orWhere(
+                "cfname",
+                "like",
+                `%${search.trim()}%`
+              );
+            }); 
+          }
+        })
+        .first(),
     ]);
 
     res.json({
@@ -48,6 +62,7 @@ customerInfoRouter.get("/", async (req, res) => {
       totalCount: totalCount.count,
     });
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       message: "Error fetching customers",
       error: err,
@@ -57,76 +72,88 @@ customerInfoRouter.get("/", async (req, res) => {
 
 customerInfoRouter.get("/read/:id", async (req, res) => {
   const id = req.params.id;
-  const deduction = await builder
+  const customer = await builder
     .select("*")
     .from("customertbl")
     .where("customerid", id);
-  res.status(200).json(deduction);
+  res.status(200).json(customer);
 });
 
-customerInfoRouter.post("/new", async (req, res) => {
+customerInfoRouter.post("/new", upload.single("cimg"), async (req, res) => {
   try {
-    const id = await builder("customertbl").insert(
-      {
-        cfname: req.body.customer.cfname,
-        cmname: req.body.customer.cmname,
-        clname: req.body.customer.clname,
-        address: req.body.customer.address,
-        contactno: req.body.customer.contactno,
-        birthdate: req.body.customer.birthdate,
-        gender: req.body.customer.gender,
-        maritalstatus: req.body.customer.maritalstatus,
-        spousefname: req.body.customer.spousefname,
-        spousemname: req.body.customer.spousemname,
-        spouselname: req.body.customer.spouselname,
-        spouseaddress: req.body.customer.spouseaddress,
-        spousebirthdate: req.body.customer.spousebirthdate,
-        spousemaritalstatus: req.body.customer.spousemaritalstatus,
-        spousecontactno: req.body.customer.spousecontactno,
-      },
-      ["customerid"]
-    );
+    
+    const customerData = {
+      cfname: req.body.cfname,
+      cmname: req.body.cmname,
+      clname: req.body.clname,
+      address: req.body.address,
+      contactno: req.body.contactno,
+      birthdate: req.body.birthdate,
+      gender: req.body.gender,
+      maritalstatus: req.body.maritalstatus,
+      spousefname: req.body.spousefname,
+      spousemname: req.body.spousemname,
+      spouselname: req.body.spouselname,
+      spouseaddress: req.body.spouseaddress,
+      spousebirthdate: req.body.spousebirthdate,
+      spousegender: req.body.spousegender,
+      spousemaritalstatus: req.body.spousemaritalstatus,
+      spousecontactno: req.body.spousecontactno,
+      tin: req.body.tin,
+      cimg: req.file ? req.file.filename : null 
+    };
 
-    res.status(200).json({ id: id[0], message: "Customer added successfully" });
+    
+    const [id] = await builder("customertbl").insert(customerData, ["customerid"]);
+
+    res.status(200).json({ id: id, message: "Customer added successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-customerInfoRouter.put("/edit/:id", async (req, res) => {
+
+customerInfoRouter.put("/edit/:id", upload.single("cimg"), async (req, res) => {
   try {
-    const id = req.params.id;
+      const customerId = req.params.id;
+     
+      const updatedCustomer = {
+        cfname: req.body.cfname,
+        cmname: req.body.cmname,
+        clname: req.body.clname,
+        address: req.body.address,
+        contactno: req.body.contactno,
+        birthdate: req.body.birthdate,
+        gender: req.body.gender,
+        maritalstatus: req.body.maritalstatus,
+        spousefname: req.body.spousefname,
+        spousemname: req.body.spousemname,
+        spouselname: req.body.spouselname,
+        spouseaddress: req.body.spouseaddress,
+        spousebirthdate: req.body.spousebirthdate,
+        spousegender: req.body.spousegender,
+        spousemaritalstatus: req.body.spousemaritalstatus,
+        spousecontactno: req.body.spousecontactno,
+        cimg: req.file ? req.file.filename : req.body.cimg,
+        tin: req.body.tin
+      };
 
-    const update = await builder("customertbl").where("customerid", id).update({
-      cfname: req.body.customer.cfname,
-      cmname: req.body.customer.cmname,
-      clname: req.body.customer.clname,
-      address: req.body.customer.address,
-      contactno: req.body.customer.contactno,
-      birthdate: req.body.customer.birthdate,
-      gender: req.body.customer.gender,
-      maritalstatus: req.body.customer.maritalstatus,
-      spousefname: req.body.customer.spousefname,
-      spousemname: req.body.customer.spousemname,
-      spouselname: req.body.customer.spouselname,
-      spouseaddress: req.body.customer.spouseaddress,
-      spousebirthdate: req.body.customer.spousebirthdate,
-      spousegender: req.body.customer.spousegender,
-      spousemaritalstatus: req.body.customer.spousemaritalstatus,
-      spousecontactno: req.body.customer.spousecontactno,
-    });
+      await builder("customertbl")
+          .where("customerid", customerId)
+          .update(updatedCustomer);
 
-    if (update > 0) {
-      res.status(200).json({ message: "Customer updated successfully" });
-    } else {
-      res.status(404).json({ error: "Customer not found" });
-    }
+      res.status(200).json({
+          message: "Customer updated successfully",updatedCustomer
+      });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+
 
 customerInfoRouter.delete("/delete/:id", async (req, res) => {
   try {
@@ -139,7 +166,7 @@ customerInfoRouter.delete("/delete/:id", async (req, res) => {
     if (deletedCount > 0) {
       res.status(200).json({ message: "Customer deleted successfully" });
     } else {
-      res.status(404).json({ error: "Deduction not found" });
+      res.status(404).json({ error: "Customer not found" });
     }
   } catch (error) {
     console.error(error);

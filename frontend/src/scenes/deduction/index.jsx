@@ -24,7 +24,7 @@ function DeductionType() {
   
     const loadDeductionData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/deductions');
+        const response = await axios.get('/api/deductions');
         setDeduction(response.data);
       } catch (error) {
         console.error('Error loading deduction data:', error);
@@ -77,7 +77,7 @@ function DeductionType() {
       }
   
       try {
-        const response = await axios.delete(`http://localhost:8000/deductions/delete/${id}`);
+        const response = await axios.delete(`/api/deductions/delete/${id}`);
         console.log(response.data);
         loadDeductionData();
         toast.success('Deduction Successfully Deleted!', {

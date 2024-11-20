@@ -52,7 +52,7 @@ export default function BorrowersModal ({onOpen, borrowerInfo, dispatcher}) {
     if(borrowerInfo.id) {
       //post
       data.id = borrowerInfo.id
-      const req = await fetch('http://localhost:8000/customers/', {
+      const req = await fetch('/api/customers/', {
         method : 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function BorrowersModal ({onOpen, borrowerInfo, dispatcher}) {
         onOpen(false)
       }
     }else{
-      const req = await fetch('http://localhost:8000/customers/', {
+      const req = await fetch('/api/customers/', {
         method : 'POST',
         headers: {
           "Content-Type": "application/json",

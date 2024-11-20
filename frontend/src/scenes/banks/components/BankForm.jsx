@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
-import { Formik, Form } from "formik";
+import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
-import { Button, Grid, Tooltip } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Grid, Tooltip } from "@mui/material";
 import Textfield from "../../../components/FormUI/Textfield";
 import axios from "axios";
 import { tokens } from "../../../theme";
 import { toast, Bounce } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const INITIAL_FORM_STATE = {
   name: "",
   check_location: "",
+  owner : false,
+  bank_branch : '',
 };
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -20,24 +22,33 @@ const FORM_VALIDATION = Yup.object().shape({
   check_location: Yup.string().required("Required"),
 });
 
-export default function BankForm({ onBankAdded, onClosePopup }) {
-  const { id } = useParams();
+const Cash2GoCheckBox = ({name}) =>{
+  const [field, meta] = useField(name);
+  return (
+    <FormControlLabel sx={{color : 'white'}} label='Cash 2 Go Bank'control={<Checkbox {...field} checked={field.value} />} />
+  )
+}
+
+
+export default function BankForm({ onBankAdded, onClosePopup, bankId : id }) {
+  // const { id } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const location = useLocation()
 
   const [initialValues, setInitialValues] = useState(INITIAL_FORM_STATE);
 
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://localhost:8000/banks/read/${id}`)
+        .get(`/api/banks/read/${id}`)
         .then((res) => {
-          const { name, check_location } = res.data[0];
+          const { name, check_location, owner, bank_branch } = res.data[0];
           // Update INITIAL_FORM_STATE with the fetched data
           // INITIAL_FORM_STATE.name = name;
           // INITIAL_FORM_STATE.check_location = check_location;
-          setInitialValues({ name, check_location });
+          setInitialValues({ name, check_location, owner : Boolean(owner), bank_branch : bank_branch });
           
         })
         .catch((err) => {
@@ -49,14 +60,13 @@ export default function BankForm({ onBankAdded, onClosePopup }) {
   const handleSubmit = async (values, actions) => {
     // Here the actions object is provided by Formik which contains helpful methods.
     const apiURL = id
-      ? `http://localhost:8000/banks/edit/${id}`
-      : "http://localhost:8000/banks/new";
-
+      ? `/api/banks/edit/${id}`
+      : "/api/banks/new";
+    const param = location.pathname.split('/')[2]
     try {
-      const res = await axios[id ? "put" : "post"](apiURL, values);
+      const res = await axios[id ? "put" : "post"](apiURL, {...values, param : param});
       onBankAdded();
       onClosePopup();
-      navigate("/banks");
 
       toast.success(res.data.message, {
         position: "top-right",
@@ -83,7 +93,6 @@ export default function BankForm({ onBankAdded, onClosePopup }) {
 
   const handleCancel = () => {
     onClosePopup();
-    navigate("/banks");
   };
 
   return (
@@ -101,6 +110,10 @@ export default function BankForm({ onBankAdded, onClosePopup }) {
             </Grid>
             <Grid item xs={12}>
               <Textfield name="check_location" label="Location" />
+            </Grid>
+            <Grid item xs={12}>
+              {/* <Cash2GoCheckBox name='owner'/> */}
+              <Textfield name="bank_branch" label="Bank/Branch" />
             </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" spacing={1} mt={2}>

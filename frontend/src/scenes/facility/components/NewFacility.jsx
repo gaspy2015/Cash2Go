@@ -17,7 +17,7 @@ export default function NewFacility({onFacilityAdded, onClosePopup}) {
 
     useEffect(() => {
       if (id) {
-        axios.get(`http://localhost:8000/facility/read/${id}`)
+        axios.get(`/api/facility/read/${id}`)
           .then((res) => {
             console.log('API Response:', res.data);
   
@@ -43,7 +43,7 @@ export default function NewFacility({onFacilityAdded, onClosePopup}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const apiURL = id ? `http://localhost:8000/facility/edit/${id}` : 'http://localhost:8000/facility/new';
+      const apiURL = id ? `/api/facility/edit/${id}` : '/api/facility/new';
       console.log({ facility });
       const axiosMethod = id ? axios.put : axios.post;
   

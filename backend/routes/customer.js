@@ -1,6 +1,7 @@
 const express = require('express')
 const customerRouter = express.Router()
 const builder = require('../builder')
+const dayjs = require('dayjs')
 
 // customerRouter.get('/', async (req, res) =>{
 //   const customers = await builder.select({
@@ -92,7 +93,76 @@ customerRouter.get('/', async (req, res) => {
   }
 });
 
+customerRouter.get('/birthday', async (req, res) => {
+  const now = dayjs().format('YYYY-MM-DD')
+  try {
+    const birthday = await builder('customertbl').select({
+      id: 'customerid',
+      birthdate : builder.raw(`DATE_FORMAT(birthdate, '%Y-%m-%d')`),
+      full_name: builder.raw(`CONCAT_WS(", ", clname, cfname, cmname)`),
+      phone_number: 'contactno'
+      
+    })
+    .whereRaw('EXTRACT(YEAR_MONTH FROM birthdate) = EXTRACT(YEAR_MONTH FROM ?)', [now])
 
+    const format = birthday.map((v) => { 
+      if(dayjs(v.birthdate).isBefore(dayjs(), 'day')) return undefined;
+
+      if(dayjs(v.birthdate).isSame(dayjs(), 'day')) 
+          return {
+              id: v.id,
+              full_name: v.full_name,
+              label : `birthday today`.toUpperCase(),
+              date: v.birthdate,
+              phone_number: v.phone_number
+          };
+  
+      if((dayjs().week() + 1) === dayjs(v.birthdate).week()) 
+          return {
+              id: v.id,
+              full_name: v.full_name,
+              label : `birthday next week`.toUpperCase(),
+              date: v.birthdate,
+              phone_number: v.phone_number
+          };
+      
+      if(dayjs(v.birthdate).isSame(dayjs(), 'week')) {
+
+          const tomorrow = dayjs().add(1, 'day')
+          
+          if(dayjs(v.birthdate).isSame(tomorrow, 'day')) {
+              return {
+                  id: v.id,
+                  full_name: v.full_name,
+                  label : `birthday is tomorrow`.toUpperCase(),
+                  date: v.birthdate,
+                  phone_number: v.phone_number
+              }
+          }
+          return {
+              id: v.id,
+              full_name: v.full_name,
+              label : `birthday this week`.toUpperCase(),
+              date: v.birthdate,
+              phone_number: v.phone_number
+          }
+      }
+  
+      if(dayjs(v.birthdate).isSame(dayjs(), 'month')) 
+          return {
+              id: v.id,
+              full_name: v.full_name, 
+              label : `birthday this month`.toUpperCase(),
+              date: v.birthdate,
+              phone_number: v.phone_number
+          }
+    }).filter(v => v != undefined).sort((a, b) => a.date - b.date)
+
+    res.status(200).json({success : true, data : format})
+  } catch (error) {
+    res.status(500).json({success : false})
+  }
+})
 
 
 customerRouter.get('/info/:id', async (req, res)=>{
@@ -127,6 +197,7 @@ customerRouter.post('/', async (req, res)=>{
   res.status(200).json({id : id[0]})
 
 })
+
 customerRouter.put('/', async (req, res)=>{
   const {borrower, spouse, id} = req.body
   //TODO handle error

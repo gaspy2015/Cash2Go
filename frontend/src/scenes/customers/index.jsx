@@ -4,18 +4,31 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import Popups from "../../components/Popups";
 import NewCustomer from "./components/NewCustomer";
-import { DeleteOutlined, EditCalendarOutlined } from "@mui/icons-material";
-import { Button, Tooltip } from "@mui/material";
+import {
+  DeleteOutlined,
+  EditCalendarOutlined,
+  SearchOutlined,
+} from "@mui/icons-material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  InputBase,
+  Tooltip,
+} from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import { Bounce, toast } from "react-toastify";
 import { Link, useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
-const SERVER_URL = 'http://localhost:8000/customerInfo';
+
+const SERVER_URL = "http://localhost:8000/customerInfo";
+const imageBaseURL = "http://localhost:8000/images/";
+
 
 function Customers() {
-  
   const [paginationModel, setPaginationModel] = useState({
     page: 0, // Initial page
     pageSize: 5,
@@ -24,25 +37,17 @@ function Customers() {
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [rowCount, setRowCount] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const loc = useLocation();
   const [openPopup, setOpenPopup] = useState(false);
 
-  // Start of loadCategoryData - use to load the x-datagrid to view the changes
-  // const loadCustomerData = async () => {
-  //   try {
-  //     const response = await axios.get('http://localhost:8000/customerInfo');
-  //     setCustomer(response.data);
-  //   } catch (error) {
-  //     console.error('Error loading category data:', error);
-  //   }
-  // };
   const loadCustomerData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(SERVER_URL, {
+      const response = await axios.get(`/api/customerInfo`, {
         params: {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
@@ -52,19 +57,27 @@ function Customers() {
       setRowCount(response.data.totalCount);
     } catch (error) {
       console.error("Error loading customer data:", error);
-    }finally {
+    } finally {
       setIsLoading(false);
-
     }
   };
   // End of loadCategoryData - use to load the x-datagrid to view the changes
 
   // Start columns - this is for the x-datagrid
   const columns = [
-    { field: "fullname", flex: 1, headerName: "Fullname" },
-    { field: "contactNo", flex: 1, headerName: "Contact" },
-    { field: "address", flex: 1, headerName: "Address" },
-    { field: "gender", flex: 1, headerName: "Gender" },
+    {
+      field: "",
+      headerName: "Avatar",
+      width: 60,
+      renderCell: (params) => <Avatar src={'/api/public/images/' + params.row.cimg} />,
+      sortable: false,
+      filterable: false,
+    },
+    { field: "fullname", width : 220, headerName: "Fullname" },
+    { field: "contactNo", width: 120, headerName: "Contact" },
+    { field: "address", width: 120, headerName: "Address" },
+    { field: "gender", width: 100, headerName: "Gender" },
+    { field: "tin", width: 120, headerName: "TIN" },
     {
       field: "actions",
       headerName: "",
@@ -114,7 +127,7 @@ function Customers() {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8000/customerInfo/delete/${id}`
+        `/api/customerInfo/delete/${id}`
       );
       console.log(response.data);
       loadCustomerData();
@@ -151,15 +164,33 @@ function Customers() {
     setOpenPopup(false);
   };
   // End closing the popup
-  
+
+  // Start search
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`/api/customerInfo`, {
+        params: {
+          page: 1, // Reset page to 1 when searching
+          pageSize: paginationModel.pageSize,
+          search: searchValue.trim(),
+        },
+      });
+      setRows(response.data.data);
+      setRowCount(response.data.totalCount);
+    } catch (error) {
+      console.error("Error loading customer data:", error);
+    }
+  };
+  // End search
 
   // Start useEffect
-  // useEffect(() =>{
-  //   loadCustomerData();
-  // }, [])
   useEffect(() => {
-    loadCustomerData();
-  }, [paginationModel]);
+    if (searchValue.trim() === "") {
+      loadCustomerData();
+    } else {
+      handleSearch();
+    }
+  }, [searchValue, paginationModel]);
   // End useEffect
 
   const handlePaginationModelChange = (newPaginationModel) => {
@@ -167,24 +198,41 @@ function Customers() {
   };
 
   return (
-    <div style={{ height: "75%", padding: 20 }}>
+    <Box padding={2} height='100%' display='flex' flexDirection='column'>
       <Header
         title={"Customer"}
         showButton={true}
         onAddButtonClick={() => setOpenPopup(true)}
         toURL={loc.pathname + "/new"}
       />
-      <DataGrid
-        columns={columns}
-        rows={rows}
-        loading={isLoading}
-        rowCount={rowCount}
-        pageSizeOptions={[5, 10, 20]}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        
-        onPaginationModelChange={handlePaginationModelChange}
-      />
+      <Box
+        display="flex"
+        alignItems="flex-start"
+        marginBottom={2}
+        backgroundColor={colors.greenAccent[800]}
+        borderRadius="3px"
+      >
+        <InputBase
+          sx={{ ml: 2, mt: 0.5, flex: 1 }}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <IconButton type="button" sx={{ p: 1 }}>
+          <SearchOutlined />
+        </IconButton>
+      </Box>
+      <Box flex={1} border='solid red' position='relative'>
+        <Box sx={{position : 'absolute', inset : 0}}></Box>
+        <DataGrid
+          columns={columns}
+          rows={rows}
+          loading={isLoading}
+          rowCount={rowCount}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={handlePaginationModelChange}
+        />
+      </Box>
 
       <Popups
         title="Customer"
@@ -197,7 +245,7 @@ function Customers() {
           onClosePopup={handleClosePopup}
         />
       </Popups>
-    </div>
+    </Box>
   );
 }
 

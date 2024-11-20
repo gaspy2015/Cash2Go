@@ -18,7 +18,7 @@ export default function NewAccountCategory({ onAccountCategoryAdded, onClosePopu
     // Start useEffect
     useEffect(() => {
       if (id) {
-          axios.get(`http://localhost:8000/account-category/read/${id}`)
+          axios.get(`/api/account-category/read/${id}`)
           .then((res) => {
               console.log('API Response:', res.data);
               
@@ -47,7 +47,7 @@ export default function NewAccountCategory({ onAccountCategoryAdded, onClosePopu
   
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const apiURL = id ? `http://localhost:8000/account-category/edit/${id}` : 'http://localhost:8000/account-category/new'
+  const apiURL = id ? `/api/account-category/edit/${id}` : '/api/account-category/new'
   console.log({accountCategory});
   const axiosMethod = id ? axios.put : axios.post;
 

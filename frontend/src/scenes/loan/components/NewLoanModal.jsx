@@ -143,7 +143,7 @@ export default function NewLoanModal({customers, collaterals, facilities, banks,
         details : details
       }
 
-      const req = await fetch('http://localhost:8000/loans', {
+      const req = await fetch('/api/loans', {
         method : 'POST',
         headers: {
           "Content-Type": "application/json",

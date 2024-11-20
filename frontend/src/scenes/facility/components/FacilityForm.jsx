@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
-import { Formik, Form } from "formik";
+import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
-import { Button, Grid, Tooltip } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Grid, Tooltip } from "@mui/material";
 import Textfield from "../../../components/FormUI/Textfield";
 import axios from "axios";
 import { tokens } from "../../../theme";
@@ -13,12 +13,21 @@ import "react-toastify/dist/ReactToastify.css";
 const INITIAL_FORM_STATE = {
     name: "",
     code: "",
+    rediscounting : false,
   };
   
-  const FORM_VALIDATION = Yup.object().shape({
+const FORM_VALIDATION = Yup.object().shape({
     name: Yup.string().required("Required"),
     code: Yup.string().required("Required"),
   });
+
+const RedisCountingCheckBox = ({name}) => {
+  const [field, meta] = useField(name);
+  
+  return (
+    <FormControlLabel sx={{color : 'white'}} label='Rediscounting'control={<Checkbox {...field} checked={field.value} />} />
+  )
+}
 
 export default function FacilityForm({onFacilityAdded, onClosePopup}) {
 
@@ -32,10 +41,11 @@ export default function FacilityForm({onFacilityAdded, onClosePopup}) {
     useEffect(() => {
         if (id) {
           axios
-            .get(`http://localhost:8000/facility/read/${id}`)
+            .get(`/api/facility/read/${id}`)
             .then((res) => {
-              const { name, code, type } = res.data[0];
-              setInitialValues({ name, code, type });
+              const { name, code, rediscounting } = res.data[0];
+              
+              setInitialValues({ name, code, rediscounting : Boolean(rediscounting)});
               
             })
             .catch((err) => {
@@ -46,9 +56,10 @@ export default function FacilityForm({onFacilityAdded, onClosePopup}) {
 
       const handleSubmit = async (values, actions) => {
         // Here the actions object is provided by Formik which contains helpful methods.
+
         const apiURL = id
-          ? `http://localhost:8000/facility/edit/${id}`
-          : "http://localhost:8000/facility/new";
+          ? `/api/facility/edit/${id}`
+          : "/api/facility/new";
     
         try {
           const res = await axios[id ? "put" : "post"](apiURL, values);
@@ -99,6 +110,9 @@ export default function FacilityForm({onFacilityAdded, onClosePopup}) {
             </Grid>
             <Grid item xs={12}>
               <Textfield name="code" label="Code" />
+            </Grid>
+            <Grid item>
+             <RedisCountingCheckBox name='rediscounting' />
             </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" spacing={1} mt={2}>
