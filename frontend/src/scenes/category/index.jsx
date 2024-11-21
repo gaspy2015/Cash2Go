@@ -8,7 +8,7 @@ import axios from 'axios'
 import NewCategory from './components/NewCategory'
 import Popups from '../../components/Popups'
 import { DeleteOutlined, EditCalendarOutlined } from '@mui/icons-material'
-import { Button, Tooltip } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CategroyForm from './components/CategroyForm'
@@ -128,7 +128,7 @@ export default function Category() {
   // End useEffect
 
   return (
-    <div style={ {height : '75%', padding : 20}}>
+    <Box padding={2} height='100%' display='flex' flexDirection='column'>
       <Header 
         title={'Loan Category'} 
         subtitle={'List of category together with their respective codes!'}
@@ -136,22 +136,27 @@ export default function Category() {
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}
       />
-      <DataGrid 
-        columns={columns}
-        rows={category}
-      />
+      <Box border='solid red' flex={1} position='relative'>
+        <Box sx={{position : 'absolute', inset : 0}}>
+          <DataGrid 
+            columns={columns}
+            rows={category}
+          />
 
-<Popups
-            title="Category"
-            openPopup={openPopup}
-            setOpenPopup={setOpenPopup}
-            toURL={'/category'}
+        </Box>
+      </Box>
+
+        <Popups
+          title="Category"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+          toURL={'/category'}
         >
-            <CategroyForm 
-              onCategoryAdded={handleCategoryAdded} 
-              onClosePopup={handleClosePopup}
-            />
+          <CategroyForm 
+            onCategoryAdded={handleCategoryAdded} 
+            onClosePopup={handleClosePopup}
+          />
         </Popups>
-    </div>
+    </Box>
   )
 }

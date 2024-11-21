@@ -69,69 +69,63 @@ function App() {
       <ThemeProvider theme={theme}>
         <AuthContextProvider>
           <CssBaseline />
-          {/* <RouterProvider router={router} /> */}
+            <Routes>
+              
+              <Route path="/auth/login" element={<Signin />} />
 
-          
-            {/* <LeftSidebar /> */}
-            {/* <main className="content"> */}
-              {/* <Topbar /> */}
-              <Routes>
-                {/* <Route path="/" element={<Dashboard />} /> */}
-                <Route path="/auth/login" element={<Signin />} />
+              <Route path="/" element={<RootLayout />}> 
+                <Route index element={<Dashboard />} /> 
+                <Route path='loans'element={<Loan />} />
+                
 
-                <Route path="/" element={<RootLayout />}> 
-                  <Route index element={<Dashboard />} /> 
-                  <Route path='loans'element={<Loan />} />
-                  
+                <Route path="report" element={<Report />} />
+                
+                <Route path="/payments" element={<LoanPayment />} />
+                {/* <Route path="/payments/:id" element={<LoanPayment />} /> */}
+                <Route path="/borrowers" element={<Borrowers />}/>
 
-                  <Route path="report" element={<Report />} />
-                  
-                  <Route path="/payments" element={<LoanPayment />} />
-                  {/* <Route path="/payments/:id" element={<LoanPayment />} /> */}
-                  <Route path="/borrowers" element={<Borrowers />}/>
+                <Route path="/customers" element={<Customers />}/>
+                <Route path="/customers/new" element={<Customers />}/>
+                <Route path="/customers/:id" element={<Customers />}/>
 
-                  <Route path="/customers" element={<Customers />}/>
-                  <Route path="/customers/new" element={<Customers />}/>
-                  <Route path="/customers/:id" element={<Customers />}/>
+                <Route path="/banks/cash2go" element={<Banks />} />
+                <Route path="/banks/customers" element={<Banks />} />
+                <Route path="/banks/new" element={<Banks />} />
+                <Route path="/banks/:id" element={<Banks />} />
 
-                  <Route path="/banks/cash2go" element={<Banks />} />
-                  <Route path="/banks/customers" element={<Banks />} />
-                  <Route path="/banks/new" element={<Banks />} />
-                  <Route path="/banks/:id" element={<Banks />} />
+                <Route path="/category" element={<Category />} />
+                <Route path="/category/new" element={<Category />} />
+                <Route path="/category/:id" element={<Category />} />
 
-                  <Route path="/category" element={<Category />} />
-                  <Route path="/category/new" element={<Category />} />
-                  <Route path="/category/:id" element={<Category />} />
+                <Route path="/facility" element={<Facility />} />
+                <Route path="/facility/new" element={<Facility />} />
+                <Route path="/facility/:id" element={<Facility />} />
 
-                  <Route path="/facility" element={<Facility />} />
-                  <Route path="/facility/new" element={<Facility />} />
-                  <Route path="/facility/:id" element={<Facility />} />
+                <Route path="/deduction" element={<DeductionType />} />
+                <Route path="/deduction/new" element={<DeductionType />} />
+                <Route path="/deduction/:id" element={<DeductionType />} />
+                
+                <Route path="/collateral" element={<Collateral />} />
+                <Route path="/collateral/new" element={<Collateral />} />
+                <Route path="/collateral/:id" element={<Collateral />} />
 
-                  <Route path="/deduction" element={<DeductionType />} />
-                  <Route path="/deduction/new" element={<DeductionType />} />
-                  <Route path="/deduction/:id" element={<DeductionType />} />
-                  
-                  <Route path="/collateral" element={<Collateral />} />
-                  <Route path="/collateral/new" element={<Collateral />} />
-                  <Route path="/collateral/:id" element={<Collateral />} />
+                <Route path="/expenses" element={<ExpensesPage />} />
+                <Route path="/adjusting-entries" element={<AdjustingEntriesPage />} />
+                
+                <Route path="/account-category" element={<AccountCategory />} />
+                <Route path="/account-category/new" element={<AccountCategory />} />
+                <Route path="/account-category/:id" element={<AccountCategory />} />
 
-                  <Route path="/expenses" element={<ExpensesPage />} />
-                  <Route path="/adjusting-entries" element={<AdjustingEntriesPage />} />
-                  
-                  <Route path="/account-category" element={<AccountCategory />} />
-                  <Route path="/account-category/new" element={<AccountCategory />} />
-                  <Route path="/account-category/:id" element={<AccountCategory />} />
+                <Route path="/account-title" element={<AccountTitle />} />
+                <Route path="/account-title/new" element={<AccountTitle />} />
+                <Route path="/account-title/:id" element={<AccountTitle />} />
 
-                  <Route path="/account-title" element={<AccountTitle />} />
-                  <Route path="/account-title/new" element={<AccountTitle />} />
-                  <Route path="/account-title/:id" element={<AccountTitle />} />
-
-                  <Route path="/employee" element={<Employee />} />
-                  <Route path="/employee/new" element={<Employee />} />
-                  <Route path="/employee/:id" element={<Employee />} />
-                </Route>
-              </Routes>
-              <ToastContainer />
+                <Route path="/employee" element={<Employee />} />
+                <Route path="/employee/new" element={<Employee />} />
+                <Route path="/employee/:id" element={<Employee />} />
+              </Route>
+            </Routes>
+            <ToastContainer />
             {/* </main> */}
           {/* </div> */}
         </AuthContextProvider>

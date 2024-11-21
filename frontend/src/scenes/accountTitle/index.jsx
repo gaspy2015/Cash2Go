@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Popups from '../../components/Popups'
 import NewAccountTitle from './components/NewAccountTitle'
 import { DeleteOutlined, EditCalendarOutlined } from '@mui/icons-material'
-import { Button, Tooltip } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { useTheme } from '@emotion/react'
 import { tokens } from '../../theme'
 import { Bounce, toast } from 'react-toastify';
@@ -118,18 +118,23 @@ function AccountTitle() {
     }, []);
 
   return (
-    <div style={ {height : '75%', padding : 20}}>
+    <Box padding={2} display='flex' flexDirection='column' height='100%'>
       <Header 
         title={'Account Titles'}  
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}
-        />
-      <DataGrid 
-        columns={columns}
-        rows={accountTitle}
-        
       />
+      <Box flex={1} position='relative' border='solid red'>
+        <Box sx={{position : 'absolute', inset : 0}}>
+          <DataGrid 
+            columns={columns}
+            rows={accountTitle}
+          />
+
+        </Box>
+
+      </Box>
 
         <Popups
             title="Account Title"
@@ -142,7 +147,7 @@ function AccountTitle() {
               onClosePopup={handleClosePopup}
             />
         </Popups>
-    </div>
+    </Box>
   )
 }
 

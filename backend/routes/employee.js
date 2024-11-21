@@ -1,7 +1,8 @@
 const express = require('express')
 const employeeRouter = express.Router()
 const builder = require('../builder')
-
+const fs = require('fs')
+const path = require('path')
 
 employeeRouter.get('/', async (req, res) => {
    const employees = await builder('employeetbl').select({id: 'employee_id', lname: 'lname', fname: 'fname', mname: 'mname', role: 'role'})
@@ -12,6 +13,7 @@ employeeRouter.get('/', async (req, res) => {
       name : fullName
     }
    })
+   
    res.status(200).json(mapEmployees)
 })
 

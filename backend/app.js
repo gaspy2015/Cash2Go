@@ -18,6 +18,8 @@ const os = require('os');
 const reportsRouter = require('./routes/reports')
 const expensesRouter = require('./routes/expenses')
 const adjustingEntriesRouter = require('./routes/adjusting-entries')
+const auth = require('./routes/auth')
+const cookieParser = require('cookie-parser')
 
 const getIPv4 = (port) => {
   const networkInterfaces = os.networkInterfaces()
@@ -30,6 +32,7 @@ const getIPv4 = (port) => {
 }
 
 const PORT = process.env.PORT || 8000
+app.use(cookieParser())
 app.use('/api/public', express.static('public'))
 
 app.use(express.static('dist'))
@@ -53,7 +56,7 @@ app.use('/api/reports', reportsRouter)
 app.use('/api/employee', employeeRouter)
 app.use('/api/expenses', expensesRouter)
 app.use('/api/adjusting-entries', adjustingEntriesRouter)
-
+app.use('/api/auth', auth)
 app.use('*', express.static('dist'))
 
 app.listen(PORT, () => { console.log(`Server running at  \n${getIPv4(PORT)}`) })

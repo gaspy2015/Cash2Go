@@ -6,6 +6,7 @@ import { tokens } from "../../theme"
 import {Outlet} from 'react-router-dom'
 import { HomeOutlined, MenuOutlined, ReceiptOutlined, PointOfSaleOutlined, AttachMoneyOutlined, Diversity3Outlined, CategoryOutlined, TrendingDownOutlined, EmojiTransportationOutlined, AccountBalanceOutlined, CompareArrowsOutlined, ClassOutlined, TitleOutlined, BadgeOutlined, RequestQuoteOutlined, AccountBalanceWalletOutlined } from "@mui/icons-material"
 import 'react-pro-sidebar/dist/css/styles.css';
+import { useAuthContext } from "../../context/AuthContext"
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -26,7 +27,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   };
 
 const LeftSidebar = () => {
-
+  const {getUser} = useAuthContext()
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -90,8 +91,8 @@ const LeftSidebar = () => {
                     alt="profile-user"
                     width="100px"
                     height="100px"
-                    src={`../../assets/c2g_logo.png`}
                     style={{ cursor: "pointer", borderRadius: "50%" }}
+                    src={`../../assets/c2g_logo.png`}
                   />
                 </Box>
                 <Box textAlign="center">
@@ -101,7 +102,7 @@ const LeftSidebar = () => {
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
-                    Administrator
+                    
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Administrator

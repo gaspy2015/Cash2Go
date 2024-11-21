@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Popups from '../../components/Popups'
 import NewCollateral from './components/NewCollateral'
 import { DeleteOutlined, EditCalendarOutlined } from '@mui/icons-material'
-import { Button, Tooltip } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { useTheme } from '@emotion/react'
 import { tokens } from '../../theme'
 import { Bounce, toast } from 'react-toastify';
@@ -117,18 +117,23 @@ function Collateral() {
       }, []);
 
   return (
-    <div style={ {height : '75%', padding : 20}}>
+    <Box height='100%' display='flex' flexDirection='column' padding={2}>
       <Header 
         title={'Collateral'} 
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}
-        />
-      <DataGrid 
-        columns={columns}
-        rows={collateral}
-        
       />
+      <Box position='relative' flex={1} border='solid red'>
+        <Box sx={{position : 'absolute', inset : 0}}>
+
+          <DataGrid 
+            columns={columns}
+            rows={collateral}
+          />
+        </Box>
+
+      </Box>
 
         <Popups
             title="Collateral"
@@ -141,7 +146,7 @@ function Collateral() {
               onClosePopup={handleClosePopup}
             />
         </Popups>
-    </div>
+    </Box>
   )
 }
 

@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Popups from '../../components/Popups'
 import NewAccountCategory from './components/NewAccountCategory'
 import { DeleteOutlined, EditCalendarOutlined } from '@mui/icons-material'
-import { Button, Tooltip } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { useTheme } from '@emotion/react'
 import { tokens } from '../../theme'
 import { Bounce, toast } from 'react-toastify';
@@ -117,18 +117,21 @@ function AccountCategory() {
       }, []);
 
   return (
-    <div style={ {height : '75%', padding : 20}}>
+    <Box padding={2} display='flex' height='100%' flexDirection='column'>
       <Header 
         title={'Account Categories'} 
         showButton={true} 
         onAddButtonClick={()=> setOpenPopup(true)} 
         toURL={loc.pathname + '/new'}
         />
-      <DataGrid 
-        columns={columns}
-        rows={accountCategory}
-        
-      />
+      <Box flex={1} position='relative' border='solid red'>
+        <Box sx={{position : 'absolute', inset : 0}}>
+          <DataGrid 
+            columns={columns}
+            rows={accountCategory}
+          />
+        </Box>
+      </Box>
 
         <Popups
             title="Account Category"
@@ -141,7 +144,7 @@ function AccountCategory() {
               onClosePopup={handleClosePopup}
             />
         </Popups>
-    </div>
+    </Box>
   )
 }
 

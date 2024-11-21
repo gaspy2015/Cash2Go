@@ -1,7 +1,6 @@
 const builder = require('../builder')
 
 async function getLoanList (req, res) {
-  
   // const search = req.query.search ? req.query.search : ''
   if(req.query) { console.log(req.query)}
   const loans = await builder.select(
